@@ -1,6 +1,7 @@
 ﻿Param (
     [string]$searchPattern = "**\AssemblyInfo.cs",
-	[string]$variablesPrefix
+    [string]$exclude = "*\UnitTests\*",
+    [string]$variablesPrefix
 )
 
 # Write all params to the console.
@@ -64,7 +65,7 @@ function SetAssemblyVariables($content)
     }
 }
 
-$filesFound = Get-ChildItem -Path $searchPattern -Recurse
+$filesFound = Get-ChildItem -Path $searchPattern -Recurse | Where {$_.FullName -notlike "$exclude"}
 
 if ($filesFound.Count -eq 0)
 {
